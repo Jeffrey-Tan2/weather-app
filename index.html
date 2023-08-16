@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/x-icon" href="./images/favicon.svg">
+    <title>Weather App</title>
+</head>
+<body>
+    <script src="script.js" defer></script>
+    <div class="content">
+        <div class="search">
+            <form id="location-form">
+                <input id="location-input" type="text" placeholder="Enter location..." autocomplete="false" autofocus="true" required />
+                <button type="submit">OK</button>
+            </form>
+            <button id="toggle">Toggle C|F</button>
+        </div>
+        <div class="today">
+            <div id="temp"></div>
+            <div id="location"></div>
+            <div id="desc"></div>
+        </div>
+        <div id="forecast"></div>
+    </div>
+</body>
+</html>
