@@ -4,10 +4,12 @@ class Weather {
         this.tempC = tempC;
         this.tempF = tempF;
         this.desc = desc;
+        this.icon = icon;
         this.forecastC = [];
         this.forecastF = [];
         this.forecastDates = [];
         this.forecastConds = [];
+        this.forecastIcons = [];
     }
     getLocation() {
         return this.location;
@@ -32,6 +34,12 @@ class Weather {
     }
     setDesc(newDesc) {
         this.desc = newDesc;
+    }
+    getIcon() {
+        return "https:" + this.icon;
+    }
+    setIcon(newIcon) {
+        this.icon = newIcon;
     }
     getForecastC() {
         return this.forecastC;
@@ -69,6 +77,15 @@ class Weather {
             this.forecastConds.push(conds[i].day.condition.text);
         }
     }
+    getForecastIcons() {
+        return this.forecastIcons;
+    }
+    setForecastIcons(icons) {
+        this.forecastIcons = [];
+        for (let i = 1; i < icons.length; i++) {
+            this.forecastIcons.push(icons[i].day.condition.icon);
+        }
+    }
 }
 
 const locationForm = document.getElementById("location-form");
@@ -76,6 +93,7 @@ const tempEle = document.getElementById("temp");
 const locationEle = document.getElementById("location");
 const descEle = document.getElementById("desc");
 const forecastEle = document.getElementById("forecast");
+const iconEle = document.getElementById("icon");
 const weekday = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
 let currLocation = new Weather();
@@ -97,14 +115,17 @@ async function getData(location) {
     try {
         const response = await fetch("https://api.weatherapi.com/v1/forecast.json?key=4a2e287a71bf400a9e5111702231508&q=" + location + "&days=8&aqi=no&alerts=no");
         const weatherData = await response.json();
+        console.log(weatherData);
         currLocation.setLocation(weatherData.location.name);
         currLocation.setTempC(weatherData.current.temp_c);
         currLocation.setTempF(weatherData.current.temp_f);
         currLocation.setDesc(weatherData.current.condition.text);
+        currLocation.setIcon(weatherData.current.condition.icon);
         currLocation.setForecastC(weatherData.forecast.forecastday);
         currLocation.setForecastF(weatherData.forecast.forecastday);
         currLocation.setForecastDates(weatherData.forecast.forecastday);
         currLocation.setForecastConds(weatherData.forecast.forecastday);
+        currLocation.setForecastIcons(weatherData.forecast.forecastday);
         displayData(currLocation, degree);
         displayForecast(currLocation, degree);
     } catch(err) {
@@ -115,6 +136,8 @@ async function getData(location) {
 function displayData(weatherObj, deg) {
     locationEle.innerText = weatherObj.getLocation();
     descEle.innerText = weatherObj.getDesc();
+    iconEle.src = weatherObj.getIcon();
+    console.log(weatherObj.getIcon());
     if (deg == "C") {
         tempEle.innerText = weatherObj.getTempC()  + " °C";
     } else if (deg == "F") {
@@ -132,6 +155,7 @@ function displayForecast(weatherObj, deg) {
     }
     const forecastDates = weatherObj.getForecastDates();
     const forecastConds = weatherObj.getForecastConds();
+    const forecastIcons = weatherObj.getForecastIcons();
     while (forecastEle.firstChild) {
         forecastEle.removeChild(forecastEle.firstChild);
     }
@@ -141,6 +165,9 @@ function displayForecast(weatherObj, deg) {
         const dayEle = document.createElement("div");
         const tempEle = document.createElement("div");
         const condEle = document.createElement("div");
+        const iconDiv = document.createElement("div");
+        iconDiv.className = "icon";
+        const iconEle = document.createElement("img");
         const date = new Date(forecastDates[i]);
         let day = weekday[date.getDay()];
         dayEle.innerText = day;
@@ -150,7 +177,10 @@ function displayForecast(weatherObj, deg) {
             tempEle.innerText = forecast[i] + " °F";
         }
         condEle.innerText = forecastConds[i];
+        iconEle.src = "https:" + forecastIcons[i];
+        iconDiv.appendChild(iconEle);
         ele.appendChild(dayEle);
+        ele.appendChild(iconDiv);
         ele.appendChild(tempEle);
         ele.appendChild(condEle);
         forecastEle.appendChild(ele);

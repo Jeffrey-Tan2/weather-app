@@ -20,6 +20,16 @@ body {
     background-image: url(./images/background.jpg);
 }
 
+img {
+    height: 64px;
+    width: 64px;
+}
+
+.icon {
+    display: flex;
+    justify-content: center;
+}
+
 .search {
     margin-top: 50px;
 }
@@ -51,8 +61,12 @@ button:hover {
 }
 
 #temp {
-    font-size: 50px;
-    font-weight: 900;
+    font-size: 36px;
+    text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
 }
 
 .forecast-day {
