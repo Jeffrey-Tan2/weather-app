@@ -94,18 +94,22 @@ locationForm.addEventListener("submit", (event) => {
 })
 
 async function getData(location) {
-    const response = await fetch("https://api.weatherapi.com/v1/forecast.json?key=4a2e287a71bf400a9e5111702231508&q=" + location + "&days=8&aqi=no&alerts=no");
-    const weatherData = await response.json();
-    currLocation.setLocation(weatherData.location.name);
-    currLocation.setTempC(weatherData.current.temp_c);
-    currLocation.setTempF(weatherData.current.temp_f);
-    currLocation.setDesc(weatherData.current.condition.text);
-    currLocation.setForecastC(weatherData.forecast.forecastday);
-    currLocation.setForecastF(weatherData.forecast.forecastday);
-    currLocation.setForecastDates(weatherData.forecast.forecastday);
-    currLocation.setForecastConds(weatherData.forecast.forecastday);
-    displayData(currLocation, degree);
-    displayForecast(currLocation, degree);
+    try {
+        const response = await fetch("https://api.weatherapi.com/v1/forecast.json?key=4a2e287a71bf400a9e5111702231508&q=" + location + "&days=8&aqi=no&alerts=no");
+        const weatherData = await response.json();
+        currLocation.setLocation(weatherData.location.name);
+        currLocation.setTempC(weatherData.current.temp_c);
+        currLocation.setTempF(weatherData.current.temp_f);
+        currLocation.setDesc(weatherData.current.condition.text);
+        currLocation.setForecastC(weatherData.forecast.forecastday);
+        currLocation.setForecastF(weatherData.forecast.forecastday);
+        currLocation.setForecastDates(weatherData.forecast.forecastday);
+        currLocation.setForecastConds(weatherData.forecast.forecastday);
+        displayData(currLocation, degree);
+        displayForecast(currLocation, degree);
+    } catch(err) {
+        alert("Invalid location or input!");
+    }
 }
 
 function displayData(weatherObj, deg) {
